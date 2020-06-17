@@ -440,6 +440,21 @@ export function pay(data) {
   });
 }
 
+export function openBusinessView(data) {
+  return new Promise((resolve, reject) => {
+    WeChat.openBusinessView(data, result => {
+      if (result) reject(result);
+    });
+    emitter.once('WXOpenBusinessView.Resp', resp => {
+      if (resp.errCode === 0) {
+        resolve(resp);
+      } else {
+        reject(new WechatError(resp));
+      }
+    });
+  });
+}
+
 /**
  * promises will reject with this error when API call finish with an errCode other than zero.
  */

@@ -31,6 +31,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessView;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX;
@@ -583,6 +584,22 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
         callback.invoke(api.sendReq(payReq) ? null : INVOKE_FAILED);
     }
 
+    @ReactMethod
+    public void openBusinessView(ReadableMap data, Callback callback) {
+        WXOpenBusinessView.Req req = new WXOpenBusinessView.Req();
+        req.businessType = "wxpayScoreEnable";
+        if (data.hasKey("businessType")) {
+            req.businessType = data.getString("businessType");
+        }
+        if (data.hasKey("query")) {
+            req.query = data.getString("query");
+        }
+        if (data.hasKey("extInfo")) {
+            req.extInfo = data.getString("extInfo");
+        }
+        callback.invoke(api.sendReq(req) ? null : INVOKE_FAILED);
+    }
+
     private void _share(final int scene, final ReadableMap data, final Callback callback) {
         Uri uri = null;
         if (data.hasKey("thumbImage")) {
@@ -895,6 +912,11 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
             map.putString("type", "WXLaunchMiniProgramReq.Resp");
             map.putString("extraData", extraData);
             map.putString("extMsg", extraData);
+        } else if (baseResp.getType() == ConstantsAPI.COMMAND_OPEN_BUSINESS_VIEW) {
+            WXOpenBusinessView.Resp resp = (WXOpenBusinessView.Resp)baseResp;
+            map.putString("type", "WXOpenBusinessView.Resp");
+            map.putString("extMsg", resp.extMsg);
+            map.putString("businessType", resp.businessType);
         }
 
         this.getReactApplicationContext()

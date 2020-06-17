@@ -157,4 +157,11 @@ declare module "react-native-wechat-lib" {
   export function pay(
     payload: PaymentLoad
   ): Promise<{ errCode?: number; errStr?: string }>;
+  export interface OpenBusinessViewMetadata {
+    query: string;
+    extInfo: string;
+  }
+  export function openBusinessView(
+    payload: OpenBusinessViewMetadata
+  ) : Promise<{ errCode?: number; errStr?: string }>;
 }
