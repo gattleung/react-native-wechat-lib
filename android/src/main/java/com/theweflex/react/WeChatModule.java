@@ -587,7 +587,6 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
     @ReactMethod
     public void openBusinessView(ReadableMap data, Callback callback) {
         WXOpenBusinessView.Req req = new WXOpenBusinessView.Req();
-        req.businessType = "wxpayScoreEnable";
         if (data.hasKey("businessType")) {
             req.businessType = data.getString("businessType");
         }
