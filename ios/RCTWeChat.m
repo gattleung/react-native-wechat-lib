@@ -519,6 +519,25 @@ RCT_EXPORT_METHOD(pay:(NSDictionary *)data
     // callback(@[success ? [NSNull null] : INVOKE_FAILED]);
 }
 
+RCT_EXPORT_METHOD(openBusinessView: (NSDictionary *)data :(RCTResponseSenderBlock)callback) {
+    WXOpenBusinessViewReq *req = [WXOpenBusinessViewReq object];
+    req.businessType = @"wxpayScoreUse";
+    if ([data objectForKey:@"businessType"]) {
+        req.businessType = data[@"businessType"];
+    }
+    if ([data objectForKey:@"query"]) {
+        req.query = data[@"query"];
+    }
+    if ([data objectForKey:@"extInfo"]) {
+        req.extInfo = data[@"extInfo"];
+    }
+    void (^ completion)(BOOL);
+    completion = ^(BOOL success) {
+        callback(@[success ? [NSNull null] : INVOKE_FAILED]);
+    };
+    [WXApi sendReq:req completion:completion];
+}
+
 #pragma mark - wx callback
 
 -(void) onReq:(BaseReq*)req
