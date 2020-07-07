@@ -600,6 +600,13 @@ RCT_EXPORT_METHOD(openBusinessView: (NSDictionary *)data :(RCTResponseSenderBloc
         body[@"extMsg"] = r.extMsg;
         body[@"type"] = @"WXLaunchMiniProgramReq.Resp";
         [self.bridge.eventDispatcher sendDeviceEventWithName:RCTWXEventName body:body];
+    } else if ([resp isKindOfClass:[WXOpenBusinessViewResp class]]) {
+        WXOpenBusinessViewResp *r = (WXOpenBusinessViewResp *)resp;
+        NSMutableDictionary *body = @{@"errCode": @(r.errCode)}.mutableCopy;
+        body[@"errStr"] = r.errStr;
+        body[@"extMsg"] = r.extMsg;
+        body[@"type"] = @"WXOpenBusinessView.Resp";
+        [self.bridge.eventDispatcher sendDeviceEventWithName:RCTWXEventName body:body];
     }
 }
 
